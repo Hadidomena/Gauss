@@ -1,0 +1,2 @@
+colorize:
+	cc -o main backsubst.c gauss.c main.c mat_io.c
