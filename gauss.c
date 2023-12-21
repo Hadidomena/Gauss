@@ -1,13 +1,13 @@
 #include "gauss.h"
 int eliminate(Matrix *mat, Matrix *b)
 {
-    for ( int x = 0; x < mat->r; x++ )
+    for (int x = 0; x < mat->r; x++)
     {
-        if ( mat->data[x][x] != 0 ) // jesli element na diagonali jest niezerowy mozemy dokonac normalnego zerowania kolumny
+        if (mat->data[x][x] != 0) // jesli element na diagonali jest niezerowy mozemy dokonac normalnego zerowania kolumny
         {
-            for ( int y = x + 1; y < mat->r; y++ )
+            for (int y = x + 1; y < mat->r; y++)
             {
-                if ( mat->data[y][x] != 0 )
+                if (mat->data[y][x] != 0)
                 {
                     double wyznacznik = mat->data[x][x] / mat->data[y][x];
                     for (int z = x; z < mat->c; z++)
@@ -16,27 +16,34 @@ int eliminate(Matrix *mat, Matrix *b)
                     }
                     b->data[y][0] -= b->data[x][0] / wyznacznik;
                 }
-                else {} // jesli element w zerowanej kolumnie jest juz rowny 0 pomijamy ja
+                else
+                {
+                } // jesli element w zerowanej kolumnie jest juz rowny 0 pomijamy ja
             }
         }
-        else 
+        else // ta czesc kodu odpowiada za zmiane kolejnosci wierszy
         {
-		double *tmp1 = mat->data[x]; 
-		double *tmp2 = b->data[x];
-		int z = x;
-		while ( mat->data[z][x] == 0 && z < mat->r ) { z++; }
-		
-		if ( z != mat->r ) 	
-		{
-			mat->data[x] = mat->data[z];
-			b->data[x] = b->data[z];
-			mat->data[z] = tmp1;
-			b->data[z] = tmp2;
-		}
-		
-		x--;
+            double *tmp1 = mat->data[x];
+            double *tmp2 = b->data[x];
+            int z = x;
+            int max_index;
+            int max = 0;
+            while (z < mat->r)
+            {
+                if (mat->data[z][x] > max)
+                {
+                    max = mat->data[z][x];
+                    max_index = z;
+                }
+                z++;
+            }
+            mat->data[x] = mat->data[max_index];
+            b->data[x] = b->data[max_index];
+            mat->data[max_index] = tmp1;
+            b->data[max_index] = tmp2;
+            x--;
         }
     }
-	
+
     return 0;
 }
