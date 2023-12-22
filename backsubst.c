@@ -8,7 +8,7 @@ int backsubst(Matrix *x, Matrix *mat, Matrix *b)
 {
     int k; // iteracja po kolumnach
     int w; // iteracja po wierszach
-    if (mat->c != mat->r || mat->r != b->r)
+    if (mat->c != mat->r || mat->r != b->r || mat->r != x->r)
     {
         return 2;
     }
